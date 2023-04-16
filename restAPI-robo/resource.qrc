@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Viewer.qml</file>
+        <file>Images/arrow_black.jpg</file>
+    </qresource>
+</RCC>

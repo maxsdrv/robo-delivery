@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>Viewer.qml</file>
         <file>Images/arrow_black.jpg</file>
+        <file>color_overlay_shader.frag</file>
     </qresource>
 </RCC>

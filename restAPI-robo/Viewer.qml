@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import com.example 1.0
 
 
 ApplicationWindow {
@@ -74,28 +75,48 @@ ApplicationWindow {
       height: 300
       visible: false
 
+      ShaderLoader {
+          id: shaderLoaderInstance
+      }
+
       //Arrow Component
       Component {
           id: arrowComponent
           Image {
               id: arrowImage
               source: "qrc:/Images/arrow_black.jpg"
+              property string loadedShader: ""
+              Component.onCompleted: {
+                  loadedShader = shaderLoaderInstance.loadShader(":/color_overlay_shader.frag");
+              }
 
               ShaderEffect {
                   anchors.fill: arrowImage
-                  fragmentShader: "
-                      uniform lowp sampler2D source;
-                      varying highp vec2 qt_TexCoord0;
-                      uniform lowp float qt_Opacity;
-                      uniform lowp vec4 color;
-                      void main() {
-                        lowp vec4 src = texture2D(source, qt_TexCoord0);
-                        gl_FragColor = vec4(src.rgb * color.rgb, src.a) * qt_Opacity;
-                      }
-                    "
+                  fragmentShader: "qrc:/color_overlay_shader.frag"
                   property color color: "green"
                   property variant source: arrowImage
               }// Shader Effect for color of arrows
+
+              function loadShaderComponent(shaderFileUrl) {
+                  var xhr = new XMLHttpRequest();
+                  xhr.open("GET", shaderFileUrl, false);
+                  try {
+                      xhr.send();
+                      if (xhr.status === 200)
+                          return xhr.responseText;
+                      else {
+                          console.error("Failed to load shader file:", shaderFileUrl, "Status:", xhr.status);
+                          return "";
+                      }
+                  }
+                  catch (err) {
+                      console.error("Error loading shader file:", shaderFileUrl, "Error:", err);
+                      return "";
+                  }
+
+//                  xhr.send();
+//                  return xhr.responseText;
+              }// function loader shader's fragment
 
               MouseArea {
                   anchors.fill: parent
@@ -104,6 +125,7 @@ ApplicationWindow {
                   }
               }
           }
+
       }// Component
 
       Loader {

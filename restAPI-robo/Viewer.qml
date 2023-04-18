@@ -84,39 +84,22 @@ ApplicationWindow {
           id: arrowComponent
           Image {
               id: arrowImage
+              width: 80; height: width
               source: "qrc:/Images/arrow_black.jpg"
               property string loadedShader: ""
-              Component.onCompleted: {
-                  loadedShader = shaderLoaderInstance.loadShader(":/color_overlay_shader.frag");
-              }
+//              Component.onCompleted: {
+//                  loadedShader = shaderLoaderInstance.loadShader(":/color_overlay_shader.frag");
+//              }
 
               ShaderEffect {
+                  id: colorEffect
                   anchors.fill: arrowImage
-                  fragmentShader: "qrc:/color_overlay_shader.frag"
-                  property color color: "green"
                   property variant source: arrowImage
+                  property real redChannel: 0.3
+//                  visible: root.step>3
+                  fragmentShader: "qrc:/color_overlay_shader.frag.qsb"
               }// Shader Effect for color of arrows
 
-              function loadShaderComponent(shaderFileUrl) {
-                  var xhr = new XMLHttpRequest();
-                  xhr.open("GET", shaderFileUrl, false);
-                  try {
-                      xhr.send();
-                      if (xhr.status === 200)
-                          return xhr.responseText;
-                      else {
-                          console.error("Failed to load shader file:", shaderFileUrl, "Status:", xhr.status);
-                          return "";
-                      }
-                  }
-                  catch (err) {
-                      console.error("Error loading shader file:", shaderFileUrl, "Error:", err);
-                      return "";
-                  }
-
-//                  xhr.send();
-//                  return xhr.responseText;
-              }// function loader shader's fragment
 
               MouseArea {
                   anchors.fill: parent

@@ -3,5 +3,6 @@
         <file>Viewer.qml</file>
         <file>Images/arrow_black.jpg</file>
         <file>color_overlay_shader.frag</file>
+        <file>color_overlay_shader.frag.qsb</file>
     </qresource>
 </RCC>

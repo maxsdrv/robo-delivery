@@ -96,7 +96,7 @@ ApplicationWindow {
                   anchors.fill: arrowImage
                   property variant source: arrowImage
                   property real redChannel: 0.3
-//                  visible: root.step>3
+                  visible: root.step>3
                   fragmentShader: "qrc:/color_overlay_shader.frag.qsb"
               }// Shader Effect for color of arrows
 

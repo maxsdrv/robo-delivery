@@ -87,16 +87,12 @@ ApplicationWindow {
               width: 80; height: width
               source: "qrc:/Images/arrow_black.jpg"
               property string loadedShader: ""
-//              Component.onCompleted: {
-//                  loadedShader = shaderLoaderInstance.loadShader(":/color_overlay_shader.frag");
-//              }
 
               ShaderEffect {
                   id: colorEffect
                   anchors.fill: arrowImage
                   property variant source: arrowImage
-                  property real redChannel: 0.3
-                  visible: root.step>3
+                  property color alphaChannel: "green"
                   fragmentShader: "qrc:/color_overlay_shader.frag.qsb"
               }// Shader Effect for color of arrows
 

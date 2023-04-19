@@ -85,15 +85,16 @@ ApplicationWindow {
           Image {
               id: arrowImage
               width: 80; height: width
-              source: "qrc:/Images/arrow_black.jpg"
+              source: ":/Images/arrow_black.jpg"
               property string loadedShader: ""
 
               ShaderEffect {
                   id: colorEffect
                   anchors.fill: arrowImage
                   property variant source: arrowImage
-                  property color alphaChannel: "green"
+                  property color alphaChannel: "black"
                   fragmentShader: "qrc:/color_overlay_shader.frag.qsb"
+                  vertexShader: "qrc:/arrow_direction.vert.qsb"
               }// Shader Effect for color of arrows
 
 

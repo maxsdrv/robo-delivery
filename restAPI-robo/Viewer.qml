@@ -10,6 +10,15 @@ ApplicationWindow {
   visible: true
   title: "Viewer"
 
+  Image {
+      id: root_background_image
+      anchors.fill: parent
+      fillMode: Image.PreserveAspectCrop
+      source: "Images/robo_background.jpg"
+      sourceSize.width: root.width
+      sourceSize.height: root.height
+  }
+
   property alias startTimeInfo: startTimeInfo
 
   RoundButton {
@@ -21,6 +30,12 @@ ApplicationWindow {
       width: 100
       height: 40
       font.pixelSize: 16
+
+      background: Rectangle {
+          color: "#00ff7f"
+          radius: startButton.radius
+      }
+
       onClicked: {
           console.log("Start button clicked")
       }
@@ -36,6 +51,12 @@ ApplicationWindow {
       height: 40
       radius: 20
       font.pixelSize: 16
+
+      background: Rectangle {
+          color: "red"
+          radius: controllersButton.radius
+      }
+
       onClicked: {
           console.log("Controllers button clicked")
           controllerWindow.show()
@@ -71,77 +92,99 @@ ApplicationWindow {
   Window {
       id: controllerWindow
       title: "Controllers"
-      width: 300
-      height: 300
+      width: 800
+      height: 600
       visible: false
 
-      ShaderLoader {
-          id: shaderLoaderInstance
-      }
+      Image {
+          id: controllers_back_image
+          anchors.fill: parent
+          fillMode: Image.PreserveAspectCrop
+          source: "Images/controllers_back.jpg"
+          sourceSize.width: controllerWindow.width
+          sourceSize.height: controllerWindow.height
+      } // Background
 
-      //Arrow Component
       Component {
           id: arrowComponent
           Image {
               id: arrowImage
-              width: 80; height: width
-              source: ":/Images/arrow_black.jpg"
-              property string loadedShader: ""
+              width: 150
+              height: 150
+              fillMode: Image.PreserveAspectFit
+              source: "Images/arrow_black.jpg"
 
               ShaderEffect {
-                  id: colorEffect
+                  id: joystick
                   anchors.fill: arrowImage
                   property variant source: arrowImage
-                  property color alphaChannel: "black"
-                  fragmentShader: "qrc:/color_overlay_shader.frag.qsb"
-                  vertexShader: "qrc:/arrow_direction.vert.qsb"
+                  property color alphaChannel: "red"
+                  property real rotation: arrowImage.parent.customRotation
+                  fragmentShader: "shaders/color_overlay_shader.frag.qsb"
+                  vertexShader: "shaders/arrow_direction.vert.qsb"
               }// Shader Effect for color of arrows
-
 
               MouseArea {
                   anchors.fill: parent
                   onClicked: {
-                      console.log("Arrow clicked:", arrowImage.rotation)
+                      console.log("Arrow clicked:", joystick.rotation)
                   }
               }
+          } // Down
+
+      } // Arrow Component
+
+      //Joystick
+      Rectangle {
+          id: centralRectangle
+          width: 500
+          height: 500
+          anchors.centerIn: parent
+          color: "#00ff7f"
+          radius: 10
+          border.width: 2
+          border.color: "#708090"
+
+          // Add the arrows
+          Loader {
+              id: upArrow
+              sourceComponent: arrowComponent
+              anchors.horizontalCenter: parent.horizontalCenter
+              anchors.top: parent.top
+              active: true
+              property real customRotation: 270
           }
 
-      }// Component
+          Loader {
+              id: leftArrow
+              sourceComponent: arrowComponent
+              anchors.verticalCenter: parent.verticalCenter
+              anchors.left: parent.left
+              active: true
+              property real customRotation: 180
+          }
 
-      Loader {
-          id: upArrow
-          sourceComponent: arrowComponent
-      }
+          Loader {
+              id: rightArrow
+              sourceComponent: arrowComponent
+              anchors.verticalCenter: parent.verticalCenter
+              anchors.right: parent.right
+              active: true
+              property real customRotation: 0
+          }
 
-//      Column {
-//          anchors.centerIn: parent
-//          anchors.horizontalCenterOffset: 50
-//          spacing: 20
+          Loader {
+              id: bottomArrow
+              sourceComponent: arrowComponent
+              anchors.horizontalCenter: parent.horizontalCenter
+              anchors.bottom: parent.bottom
+              active: true
+              property real customRotation: 90
+          }
 
-//          Button {
-//              text: "Up"
-//              onClicked: console.log("Up button clicked")
-//          }
+      } // Central rectangle for joystick
 
-//          Row {
-//              spacing: 20
-//              Button {
-//                  text: "Left"
-//                  onClicked: console.log("Left button clicked")
-//              }
-
-//              Button {
-//                  text: "Right"
-//                  onClicked: console.log("Right button clicked")
-//              }
-//          }
-
-//          Button {
-//              text: "Down"
-//              onClicked: console.log("Down button clicked")
-//          }
-//      }
-  }
+  } // Controller Window
 
 }// Application Window
 

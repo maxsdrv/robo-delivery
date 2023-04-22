@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>Viewer.qml</file>
         <file>Images/arrow_black.jpg</file>
+        <file alias="shaders/color_overlay_shader.frag.qsb">color_overlay_shader.frag.qsb</file>
+        <file alias="shaders/arrow_direction.vert.qsb">arrow_direction.vert.qsb</file>
     </qresource>
 </RCC>

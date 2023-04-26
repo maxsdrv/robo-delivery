@@ -18,12 +18,10 @@ message("QSB_EXECUTABLE: ${QSB_EXECUTABLE}")
 
 set(HEADERS
   Monitor.h
-  shaderloader.h
   )
 
 set(SOURCES 
   Monitor.cpp
-  shaderloader.cpp
   main.cpp
   )
 
@@ -42,6 +40,7 @@ qt6_add_resources(${PROJECT_NAME} "${PROJECT_NAME}"
     "Images/arrow_black.jpg"
     "Images/robo_background.jpg"
     "Images/controllers_back.jpg"
+    "Images/facing-Arrow.jpg"
 )
 
 qt6_add_shaders(${PROJECT_NAME} "${PROJECT_NAME}_shaders" 

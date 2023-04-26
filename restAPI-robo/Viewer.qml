@@ -1,6 +1,5 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import com.example 1.0
 
 
 ApplicationWindow {
@@ -107,30 +106,53 @@ ApplicationWindow {
 
       Component {
           id: arrowComponent
-          Image {
-              id: arrowImage
+          Item {
+              id: arrowContainer
               width: 150
               height: 150
-              fillMode: Image.PreserveAspectFit
-              source: "Images/arrow_black.jpg"
+              Rectangle {
+                  id: recImage
+                  width: 150
+                  height: 150
+                  anchors.horizontalCenter: parent.horizontalCenter
+                  anchors.verticalCenter: parent.verticalCenter
+                  radius: 5
+                  color: "red"
+                  border.color: centralRectangle.border.color
+                  border.width: 5
 
-              ShaderEffect {
-                  id: joystick
-                  anchors.fill: arrowImage
-                  property variant source: arrowImage
-                  property color alphaChannel: "red"
-                  property real rotation: arrowImage.parent.customRotation
-                  fragmentShader: "shaders/color_overlay_shader.frag.qsb"
-                  vertexShader: "shaders/arrow_direction.vert.qsb"
-              }// Shader Effect for color of arrows
-
-              MouseArea {
-                  anchors.fill: parent
-                  onClicked: {
-                      console.log("Arrow clicked:", joystick.rotation)
+                  Image {
+                      id: arrowImage
+                      width: 100
+                      height: 100
+                      anchors.centerIn: recImage
+                      source: "Images/facing-Arrow.jpg"
+                      visible: false
                   }
-              }
-          } // Down
+
+                  ShaderEffect {
+                      id: joystick
+                      anchors.centerIn: recImage
+                      width: arrowImage.width
+                      height: arrowImage.height
+                      property variant source: arrowImage
+                      property color customColor: "yellow"
+                      property real rotation: arrowContainer.parent.customRotation
+                      property real customWidth: arrowImage.width
+                      property real customHeight: arrowImage.height
+                      fragmentShader: "shaders/color_overlay_shader.frag.qsb"
+                      vertexShader: "shaders/arrow_direction.vert.qsb"
+                  }// Shader Effect for color of arrows
+
+                  MouseArea {
+                      anchors.fill: parent
+                      onClicked: {
+                          console.log("Arrow clicked:", joystick.rotation)
+                      }
+                  }
+              } // Rectangle for image
+
+          }
 
       } // Arrow Component
 

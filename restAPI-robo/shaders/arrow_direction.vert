@@ -8,10 +8,10 @@ layout(location=0) out vec2 qt_TexCoord0;
 layout(std140, binding=0) uniform buf {
     mat4 qt_Matrix;
     float qt_Opacity;
-    float alphaChannel; // image color
+    vec4 customColor;
     float rotation; // image rotation
-    float width; // image width
-    float height; // image height
+    float customWidth; // image width
+    float customHeight; // image height
 } ubuf;
 
 
@@ -24,7 +24,7 @@ void main(void)
     qt_TexCoord0 = qt_MultiTexCoord0;
 
     vec4 pos = qt_Vertex;
-    vec2 center = vec2(ubuf.width / 2, ubuf.height /2);
+    vec2 center = vec2(ubuf.customWidth * 0.5, ubuf.customHeight * 0.5);
     float angle = radians(ubuf.rotation);
     float s = sin(angle);
     float c = cos(angle);
@@ -34,7 +34,6 @@ void main(void)
     float rotatedY = pos.x * s + pos.y * c;
     pos.x = rotatedX + center.x;
     pos.y = rotatedY + center.y;
-  
 
     gl_Position = ubuf.qt_Matrix * pos;
 }
